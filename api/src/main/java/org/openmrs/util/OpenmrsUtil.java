@@ -128,6 +128,8 @@ public class OpenmrsUtil {
 	private OpenmrsUtil() {
 	}
 	
+	private static volatile MimetypesFileTypeMap mimetypesFileTypeMap = null;
+	
 	private static org.slf4j.Logger log = LoggerFactory.getLogger(OpenmrsUtil.class);
 	
 	private static Map<Locale, SimpleDateFormat> dateFormatCache = new HashMap<>();
@@ -308,8 +310,12 @@ public class OpenmrsUtil {
 	 * @return mime type
 	 */
 	public static String getFileMimeType(File file) {
-		MimetypesFileTypeMap mimeMap = new MimetypesFileTypeMap();
-		return mimeMap.getContentType(file);
+		if (mimetypesFileTypeMap == null) {
+			synchronized (OpenmrsUtil.class) {
+				mimetypesFileTypeMap = new MimetypesFileTypeMap();
+			}
+		}
+		return mimetypesFileTypeMap.getContentType(file);
 	}
 	
 	/**
@@ -486,6 +492,23 @@ public class OpenmrsUtil {
 
 		// set global log level
 		applyLogLevels();
+	}
+	
+	/**
+	 * Gets the in-memory log appender. This method needed to be added as it is much more difficult to
+	 * get a specific appender in the Log4J2 architecture. This method is called in places where we need
+	 * to display logging message.
+	 *
+	 * @since 2.4.0
+	 */
+	public static MemoryAppender getMemoryAppender() {
+		MemoryAppender memoryAppender = ((LoggerContext) LogManager.getContext()).getConfiguration().getAppender("MEMORY_APPENDER");
+		if (memoryAppender != null) {
+			if (!memoryAppender.isStarted()) {
+				memoryAppender.start();
+			}
+		}
+		return memoryAppender;
 	}
 	
 	/**
@@ -944,9 +967,7 @@ public class OpenmrsUtil {
 			throw new IOException("Could not delete directory '" + dir.getAbsolutePath() + "' (not a directory)");
 		}
 		
-		if (log.isDebugEnabled()) {
-			log.debug("Deleting directory " + dir.getAbsolutePath());
-		}
+		log.debug("Deleting directory {}", dir.getAbsolutePath());
 		
 		File[] fileList = dir.listFiles();
 		if (fileList == null) {
@@ -1085,8 +1106,10 @@ public class OpenmrsUtil {
 					filepath = OpenmrsConstants.APPLICATION_DATA_DIRECTORY_FALLBACK_UNIX + File.separator + openmrsDir;
 				}
 			} else {
-				filepath = System.getProperty("user.home") + File.separator + "Application Data" + File.separator
-				        + "OpenMRS";
+				filepath = System.getProperty("user.home") + File.separator + "Application Data" + File.separator + "OpenMRS";
+				if (!new File(filepath).exists()) {
+					filepath = System.getenv("appdata") + File.separator + "OpenMRS";
+				}
 				if (!canWrite(new File(filepath))) {
 					log.warn("Unable to write to users home dir, fallback to: "
 					        + OpenmrsConstants.APPLICATION_DATA_DIRECTORY_FALLBACK_WIN);
@@ -1160,14 +1183,14 @@ public class OpenmrsUtil {
 	}
 	
 	/**
-	 * Checks whether the current JVM version is at least Java 6.
+	 * Checks whether the current JVM version is at least Java 8.
 	 * 
-	 * @throws ApplicationContextException if the current JVM version is earlier than Java 6
+	 * @throws ApplicationContextException if the current JVM version is earlier than Java 8
 	 */
 	public static void validateJavaVersion() {
-		// check whether the current JVM version is at least Java 6
-		if (JdkVersion.getJavaVersion().matches("1.(0|1|2|3|4|5).(.*)")) {
-			throw new APIException("OpenMRS requires Java 6, but is running under " + JdkVersion.getJavaVersion());
+		// check whether the current JVM version is at least Java 8
+		if (JdkVersion.getJavaVersion().matches("1.(0|1|2|3|4|5|6|7).(.*)")) {
+			throw new APIException("OpenMRS requires Java 8 and above, but is running under " + JdkVersion.getJavaVersion());
 		}
 	}
 	

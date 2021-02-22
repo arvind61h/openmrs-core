@@ -44,7 +44,7 @@ public class MemoryAppender extends AbstractAppender {
 	// we store the MemoryAppenders by name, using SoftReferences to allow them to be garbage collected
 	// as an implementation detail, we expect this class to only have a single instance, so our map
 	// is only allocated an initial capacity of 1
-	private final static Map<String, SoftReference<MemoryAppender>> APPENDERS = new HashMap<>(1);
+	private static final Map<String, SoftReference<MemoryAppender>> APPENDERS = new HashMap<>(1);
 
 	private ThreadSafeCircularFifoQueue<LogEvent> buffer;
 
@@ -77,13 +77,11 @@ public class MemoryAppender extends AbstractAppender {
 		if (APPENDERS.containsKey(name)) {
 			appender = APPENDERS.get(name).get();
 
-			if (appender != null) {
-				if (appender.bufferSize != theBufferSize) {
-					ThreadSafeCircularFifoQueue<LogEvent> oldBuffer = appender.buffer;
-					appender.buffer = new ThreadSafeCircularFifoQueue<>(theBufferSize);
-					appender.bufferSize = theBufferSize;
-					appender.buffer.addAll(oldBuffer);
-				}
+			if (appender != null && appender.bufferSize != theBufferSize) {
+				ThreadSafeCircularFifoQueue<LogEvent> oldBuffer = appender.buffer;
+				appender.buffer = new ThreadSafeCircularFifoQueue<>(theBufferSize);
+				appender.bufferSize = theBufferSize;
+				appender.buffer.addAll(oldBuffer);
 			}
 		}
 

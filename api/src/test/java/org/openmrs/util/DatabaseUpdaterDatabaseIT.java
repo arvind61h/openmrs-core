@@ -29,9 +29,11 @@ public class DatabaseUpdaterDatabaseIT extends H2DatabaseIT {
 	 * 
 	 * This constant needs to be updated when adding new Liquibase update files to openmrs-core.
 	 */
-	private static final int CHANGE_SET_COUNT_FOR_2_1_X = 863;
 	
-	
+	private static final int CHANGE_SET_COUNT_FOR_GREATER_THAN_2_1_X = 872;
+
+	private static final int CHANGE_SET_COUNT_FOR_2_1_X = 870;
+
 	@BeforeEach
 	public void setup() {
 		DatabaseUpdater.setLiquibaseProvider(this);
@@ -50,7 +52,7 @@ public class DatabaseUpdaterDatabaseIT extends H2DatabaseIT {
 		
 		List<DatabaseUpdater.OpenMRSChangeSet> actual = DatabaseUpdater.getDatabaseChanges();
 		
-		assertEquals(CHANGE_SET_COUNT_FOR_2_1_X, actual.size());
+		assertEquals(CHANGE_SET_COUNT_FOR_GREATER_THAN_2_1_X, actual.size());
 		
 	}
 }

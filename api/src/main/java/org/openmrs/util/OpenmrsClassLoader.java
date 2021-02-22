@@ -84,9 +84,7 @@ public class OpenmrsClassLoader extends URLClassLoader {
 		
 		OpenmrsClassLoaderHolder.INSTANCE = this;
 		
-		if (log.isDebugEnabled()) {
-			log.debug("Creating new OpenmrsClassLoader instance with parent: {}", parent);
-		}
+		log.debug("Creating new OpenmrsClassLoader instance with parent: {}", parent);
 		
 		//disable caching so the jars aren't locked
 		//if performance is effected, this can be disabled in favor of
@@ -542,24 +540,17 @@ public class OpenmrsClassLoader extends URLClassLoader {
 									}
 								} else {
 									field.set(null, null);
-									if (log.isDebugEnabled()) {
-										log.debug("Set field " + field.getName() + " to null in class " + clazz.getName());
-									}
+									log.debug("Set field {} to null in class {}", field.getName(), clazz.getName());
 								}
 							}
 							catch (Exception t) {
-								if (log.isDebugEnabled()) {
-									log.debug("Could not set field " + field.getName() + " to null in class "
-											+ clazz.getName(), t);
-								}
+								log.debug("Could not set field {} to null in class {}", field.getName(), clazz.getName(), t);
 							}
 						}
 					}
 				}
 				catch (Exception t) {
-					if (log.isDebugEnabled()) {
-						log.debug("Could not clean fields for class " + clazz.getName(), t);
-					}
+					log.debug("Could not clean fields for class {}", clazz.getName(), t);
 				}
 			}
 		}
@@ -594,26 +585,19 @@ public class OpenmrsClassLoader extends URLClassLoader {
 					if (null != value) {
 						Class<?> valueClass = value.getClass();
 						if (!loadedByThisOrChild(valueClass)) {
-							if (log.isDebugEnabled()) {
-								log.debug("Not setting field " + field.getName() + " to null in object of class "
-										+ instance.getClass().getName() + " because the referenced object was of type "
-										+ valueClass.getName() + " which was not loaded by this WebappClassLoader.");
-							}
+							log.debug(
+							    "Not setting field {} to null in object of class {} because the referenced object was of type {} which was not loaded by this WebappClassLoader.",
+							    field.getName(), instance.getClass().getName(), valueClass.getName());
 						} else {
 							field.set(instance, null);
-							if (log.isDebugEnabled()) {
-								log.debug("Set field " + field.getName() + " to null in class "
-										+ instance.getClass().getName());
-							}
+							log.debug("Set field {} to null in class {}", field.getName(), instance.getClass().getName());
 						}
 					}
 				} 
 			}
 			catch (Exception e) {
-				if (log.isDebugEnabled()) {
-					log.debug("Could not set field " + field.getName() + " to null in object instance of class "
-							+ instance.getClass().getName(), e);
-				}
+				log.debug("Could not set field {} to null in object instance of class {}", field.getName(),
+				    instance.getClass().getName(), e);
 			}
 		}
 	}

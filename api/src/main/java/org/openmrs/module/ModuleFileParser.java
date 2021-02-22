@@ -281,13 +281,12 @@ public class ModuleFileParser {
 	private DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
-		db.setEntityResolver((publicId, systemId) -> {
-			// When asked to resolve external entities (such as a
-			// DTD) we return an InputSource
-			// with no data at the end, causing the parser to ignore
-			// the DTD.
-			return new InputSource(new StringReader(""));
-		});
+
+		// When asked to resolve external entities (such as a
+		// DTD) we return an InputSource
+		// with no data at the end, causing the parser to ignore
+		// the DTD.
+		db.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
 		return db;
 	}
 
@@ -450,8 +449,8 @@ public class ModuleFileParser {
 
 			if (point.isEmpty() || extClass.isEmpty()) {
 				log.warn("'point' and 'class' are required for extensions. Given '{}' and '{}'", point, extClass);
-			} else if (point.contains(Extension.extensionIdSeparator)) {
-				log.warn("Point id contains illegal character: '{}'", Extension.extensionIdSeparator);
+			} else if (point.contains(Extension.EXTENSION_ID_SEPARATOR)) {
+				log.warn("Point id contains illegal character: '{}'", Extension.EXTENSION_ID_SEPARATOR);
 			} else {
 				result.put(point, extClass);
 			}

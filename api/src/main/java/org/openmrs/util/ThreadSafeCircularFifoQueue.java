@@ -699,7 +699,7 @@ public class ThreadSafeCircularFifoQueue<E> extends AbstractQueue<E> implements 
 			lock.lock();
 			try {
 				if (!isDetached()) {
-					updateIndices();;
+					updateIndices();
 					if (prevIndex >= 0) {
 						prevItem = elements[prevIndex];
 						detach();
@@ -756,13 +756,11 @@ public class ThreadSafeCircularFifoQueue<E> extends AbstractQueue<E> implements 
 				
 				if (prevIndex == NONE) {
 					throw new IllegalStateException();
-				} else if (prevIndex >= 0) {
-					if (elements[prevIndex] == prevItem) {
-						internalRemoveAtIndex(prevIndex);
+				} else if (prevIndex >= 0 && elements[prevIndex] == prevItem) {
+					internalRemoveAtIndex(prevIndex);
 
-						if (prevIndex != read) {
-							nextIndex = Math.max(prevIndex, read);
-						}
+					if (prevIndex != read) {
+						nextIndex = Math.max(prevIndex, read);
 					}
 				}
 
@@ -770,7 +768,7 @@ public class ThreadSafeCircularFifoQueue<E> extends AbstractQueue<E> implements 
 				prevItem = null;
 				
 				if (nextIndex < 0) {
-					detach();;
+					detach();
 				}
 			}
 			finally {

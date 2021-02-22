@@ -9,6 +9,8 @@
  */
 package org.openmrs.test;
 
+import static org.springframework.test.util.AssertionErrors.assertTrue;
+
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -18,7 +20,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.SerializedObjectDAOTest;
 import org.openmrs.module.ModuleConstants;
@@ -43,7 +44,13 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
  * @see SerializedObjectDAOTest
  * @see ModuleInteroperabilityTest
  * @see BaseContextSensitiveTest
+ * @deprecated as of 2.4
+ * <p>openmrs-core migrated its tests from JUnit 4 to JUnit 5.
+ * JUnit 4 helpers are still supported so module developers can gradually migrate tests from JUnit 4 to JUnit 5.
+ * To migrate your tests follow <a href="https://wiki.openmrs.org/display/docs/How+to+migrate+to+JUnit+5">How to migrate to JUnit 5</a>.
+ * The JUnit 5 version of the class is {@link org.openmrs.test.jupiter.StartModuleExecutionListener}.<p>
  */
+@Deprecated
 public class StartModuleExecutionListener extends AbstractTestExecutionListener {
 	
 	private static final Logger log = LoggerFactory.getLogger(StartModuleExecutionListener.class);
@@ -88,7 +95,7 @@ public class StartModuleExecutionListener extends AbstractTestExecutionListener 
 					log.error("Error while starting modules: ", e);
 					throw e;
 				}
-				Assert.assertTrue("Some of the modules did not start successfully for "
+				assertTrue("Some of the modules did not start successfully for "
 				        + testContext.getTestClass().getSimpleName() + ". Only " + ModuleFactory.getStartedModules().size()
 				        + " modules started instead of " + startModuleAnnotation.value().length, startModuleAnnotation
 				        .value().length <= ModuleFactory.getStartedModules().size());

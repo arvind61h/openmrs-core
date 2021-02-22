@@ -185,7 +185,7 @@ public class Context {
 	/**
 	 * Spring init method that sets the authentication scheme.
 	 */
-	static private void setAuthenticationScheme() {
+	private static void setAuthenticationScheme() {
 
 		authenticationScheme = new UsernamePasswordAuthenticationScheme();
 
@@ -559,7 +559,7 @@ public class Context {
 	public static ProgramWorkflowService getProgramWorkflowService() {
 		return getServiceContext().getProgramWorkflowService();
 	}
-
+	
 	/**
 	 * Get the message service.
 	 *
@@ -1189,11 +1189,13 @@ public class Context {
 	 *
 	 * @param userInput (can be null) responses from the user about needed input
 	 * @throws DatabaseUpdateException if an error occurred while updating
-	 * @throws InputRequiredException if user input is required
 	 * @since 1.5
+	 * @deprecated as of 2.4
+	 * 
 	 */
-	public static void updateDatabase(Map<String, Object> userInput) throws DatabaseUpdateException, InputRequiredException {
-		DatabaseUpdater.executeChangelog(null, userInput);
+	@Deprecated
+	public static void updateDatabase(Map<String, Object> userInput) throws DatabaseUpdateException {
+		throw new UnsupportedOperationException("As of 2.4, this method is not longer implemented");
 	}
 
 	/**
