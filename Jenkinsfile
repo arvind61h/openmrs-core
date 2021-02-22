@@ -8,6 +8,7 @@ pipeline{
         }
         stage("Build-Artifacts"){
             steps{
+                tool name: 'MAVEN_HOME', type: 'maven'
                 sh 'mvn clean install'
             }
             post {
@@ -23,6 +24,7 @@ pipeline{
         }
         stage("Static-code-Analysis"){
             steps{
+                tool name: 'MAVEN_HOME', type: 'maven'
                 sh 'mvn sonar:sonar'
             }
             post{
@@ -38,6 +40,7 @@ pipeline{
         }
         stage('Deploy-artifacts'){
             steps{
+                tool name: 'MAVEN_HOME', type: 'maven'
                 mvn deploy
             }
         }
