@@ -1060,9 +1060,9 @@
 
 	<repositories>
 		<repository>
-			<id>openmrs-repo</id>
+			<id>nexus</id>
 			<name>OpenMRS Nexus Repository</name>
-			<url>https://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
+			<url>http://ec2-3-21-247-131.us-east-2.compute.amazonaws.com:8081/repository/maven-central/</url>
 		</repository>
 	</repositories>
 
@@ -1079,14 +1079,14 @@
 
 	<distributionManagement>
 		<repository>
-			<id>openmrs-repo-releases</id>
+			<id>nexus</id>
 			<name>OpenMRS Nexus Releases</name>
-			<url>https://mavenrepo.openmrs.org/nexus/content/repositories/releases</url>
+			<url>http://ec2-3-21-247-131.us-east-2.compute.amazonaws.com:8081/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>openmrs-repo-snapshots</id>
+			<id>nexus</id>
 			<name>OpenMRS Nexus Snapshots</name>
-			<url>https://mavenrepo.openmrs.org/nexus/content/repositories/snapshots</url>
+			<url>http://ec2-3-21-247-131.us-east-2.compute.amazonaws.com:8081/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -1107,7 +1107,8 @@
 		<log4jVersion>2.13.3</log4jVersion>
 		<customArgLineForTesting/>
 
-		<sonar.host.url>https://sonar.openmrs.org</sonar.host.url>
+		<sonar.host.url>http://3.138.114.10:9000/</sonar.host.url>
+		<sonar.login>6366c9569d2149097122b2ba12002c3caeb52a59</sonar.login>
 		<sonar.issuesReport.html.enable>true</sonar.issuesReport.html.enable>
 		<sonar.issuesReport.lightModeOnly>true</sonar.issuesReport.lightModeOnly>
 		<sonar.issuesReport.console.enable>true</sonar.issuesReport.console.enable>
