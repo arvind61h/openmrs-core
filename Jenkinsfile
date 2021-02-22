@@ -7,9 +7,12 @@ pipeline{
             }
         }
         stage("Build-Artifacts"){
-            steps{
+            tools{
                 tool name: 'MAVEN_HOME', type: 'maven'
-                sh 'mvn clean install'
+                steps{
+                    
+                    sh 'mvn clean install'
+                }
             }
             post {
                 success{
@@ -23,9 +26,12 @@ pipeline{
             }
         }
         stage("Static-code-Analysis"){
-            steps{
+            tools{
                 tool name: 'MAVEN_HOME', type: 'maven'
-                sh 'mvn sonar:sonar'
+                steps{
+                    
+                    sh 'mvn sonar:sonar'
+                }
             }
             post{
                 success{
@@ -39,9 +45,12 @@ pipeline{
             }
         }
         stage('Deploy-artifacts'){
-            steps{
+            tools{
                 tool name: 'MAVEN_HOME', type: 'maven'
-                mvn deploy
+                steps{
+                    
+                    mvn deploy
+                }
             }
         }
         stage("Deploying on Dev Environment"){
