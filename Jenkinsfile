@@ -12,9 +12,8 @@ pipeline{
         stage("Build-Artifacts"){
             steps{
                 
-                sh 'mvn install -DskipTests'
-                sh 'cd web/target/surefire-reports'
-                sh 'touch *.xml'
+                sh 'mvn install'
+                
             }
             post {
                 success{
