@@ -2,7 +2,7 @@ pipeline{
     agent any
     tools { 
         maven 'MAVEN_HOME' 
-        
+        jdk 'JDK'
     }
     stages{
         stage('SCM-Checkout'){
