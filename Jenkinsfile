@@ -12,7 +12,7 @@ pipeline{
         stage("Build-Artifacts"){
             steps{
                 
-                sh 'mvn clean install -Dmaven.test.skip=true'
+                sh 'mvn clean install'
             }
             post {
                 success{
@@ -47,7 +47,7 @@ pipeline{
         }
         stage("Deploying on Dev Environment"){
             steps{
-                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://3.128.189.105:8080/')], contextPath: 'openmrs', war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://3.22.221.114:8080/')], contextPath: 'openmrs', war: '**/*.war'
             }
             post{
                 always{
