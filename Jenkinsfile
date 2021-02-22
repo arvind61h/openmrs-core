@@ -1,7 +1,8 @@
 pipeline{
     agent any
-    environment {
-        tool name: 'MAVEN_HOME', type: 'maven'
+    tools { 
+        maven 'Maven 3.6.3' 
+        
     }
     stages{
         stage('SCM-Checkout'){
