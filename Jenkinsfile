@@ -12,7 +12,7 @@ pipeline{
         stage("Build-Artifacts"){
             steps{
                 
-                sh 'mvn clean install'
+                sh 'mvn clean -DskipTest install'
             }
             post {
                 success{
