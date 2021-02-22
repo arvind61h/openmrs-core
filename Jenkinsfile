@@ -48,7 +48,7 @@ pipeline{
         }
         stage("Deploying on Dev Environment"){
             steps{
-                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://3.14.150.165:8080/')], contextPath: 'openmrs', war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://3.128.189.105:8080/')], contextPath: 'openmrs', war: '**/*.war'
             }
             post{
                 always{
