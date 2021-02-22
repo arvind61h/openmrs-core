@@ -1,5 +1,5 @@
 pipeline{
-    agent
+    agent any
     stages{
         stage('SCM-Checkout'){
             steps{
@@ -30,11 +30,11 @@ pipeline{
                     jacoco buildOverBuild: true, changeBuildStatus: true, deltaBranchCoverage: '80', deltaClassCoverage: '80', deltaComplexityCoverage: '80', deltaInstructionCoverage: '80', deltaLineCoverage: '80', deltaMethodCoverage: '80', maximumBranchCoverage: '80', maximumClassCoverage: '80', maximumComplexityCoverage: '80', maximumInstructionCoverage: '80', maximumLineCoverage: '80', maximumMethodCoverage: '80', minimumBranchCoverage: '80', minimumClassCoverage: '80', minimumComplexityCoverage: '80', minimumInstructionCoverage: '80', minimumLineCoverage: '80', minimumMethodCoverage: '80'   
                 }
             }
-            post{
-                always{
-                    slackSend channel: 'openmrs', color: '#439FE0', message: '"Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"', teamDomain: 'testing-6yw5886', tokenCredentialId: 'slack'
-                }   
+        stage("JOb Status Noitifaction"){
+            steps{
+                slackSend channel: 'openmrs', color: '#439FE0', message: '"Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"', teamDomain: 'testing-6yw5886', tokenCredentialId: 'slack'
             }
+        }
         }
         stage('Deploy-artifacts'){
             steps{
