@@ -12,7 +12,7 @@ pipeline{
         stage("Build-Artifacts"){
             steps{
                 
-                sh 'mvn clean install -U'
+                sh 'mvn clean install -Dmaven.test.skip=true'
             }
             post {
                 success{
