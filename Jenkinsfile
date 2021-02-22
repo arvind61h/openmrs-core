@@ -13,6 +13,8 @@ pipeline{
             steps{
                 
                 sh 'mvn install -DskipTests'
+                sh 'cd web/target/surefire-reports'
+                sh 'touch *.xml'
             }
             post {
                 success{
