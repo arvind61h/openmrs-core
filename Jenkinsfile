@@ -1,5 +1,5 @@
 pipeline{
-    agent{
+    agent
         stages{
             stage('SCM-Checkout'){
                 steps{
@@ -50,6 +50,5 @@ pipeline{
                 always{
                     slackSend channel: 'openmrs', color: '#439FE0', message: '"Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"', teamDomain: 'testing-6yw5886', tokenCredentialId: 'slack'
                 }
-        }
-    }
+            }
 }
